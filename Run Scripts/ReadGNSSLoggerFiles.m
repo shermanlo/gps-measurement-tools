@@ -1,5 +1,6 @@
 clear all, close all
 
+
 dirName = 'C:\Users\yuan_\Documents\GitHub\gps-measurement-tools\GNSSLogFiles'
 
 % datefile = '2018_09_10_17_57_44';
