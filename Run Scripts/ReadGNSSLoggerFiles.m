@@ -1,6 +1,10 @@
 clear all, close all
 
 <<<<<<< Updated upstream
+<<<<<<< Updated upstream
+=======
+dirName = 'C:\Users\yuan_\Documents\GNSSLogFiles'
+>>>>>>> Stashed changes
 
 dirName = 'C:\Users\yuan_\Documents\GitHub\gps-measurement-tools\GNSSLogFiles'
 
@@ -12,12 +16,27 @@ dirName = 'C:\Users\yuan_\Document\GNSSLogFiles'
 % fileName = ['Approach and Landing at SEA.txt']
 % fileName = ['gnss_log_2018_11_28_12_24_10.txt'];
 % fileName = ['gnss_log_2018_12_08_00_11_42.txt'];
+<<<<<<< Updated upstream
 
 %fileName    = ['gnss_log_2020_05_10_16_38_56.txt'];
 %fileName    = ['gnss_log_2020_06_02_19_49_41.txt'];
 %fileName    = ['gnss_log_2020_02_19_11_04_35.txt'];
 
 fileName    = ['gnss_log_2020_02_19_11_02_44.txt'];
+=======
+% fileName = ['Stationary room data.txt'];
+% fileName = ['walk from caltrain.txt'];
+% fileName = ['Stationary data in the courtyard.txt'];
+% fileName = ['stationary courtyard data - 12-18-18.txt'];
+% fileName = ['gnss_log_2018_05_03_22_14_07.txt']; % fort huachuaca
+% fileName = ['gnss_log_2018_02_19_10_44_37.txt'];
+% fileName = ['gnss_log_2018_02_19_10_07_22.txt'];
+% fileName = 'gnss_log_2018_08_08_11_29_45.txt'
+
+fileName    = ['gnss_log_2020_02_19_11_02_44.txt'];
+% fileName    = ['gnss_log_2020_06_02_19_49_41.txt'];
+% fileName    = ['gnss_log_2020_05_12_17_07_41.txt'];
+>>>>>>> Stashed changes
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));
 datamonth   = str2num(fileName(under_idx(3)+1:under_idx(4)-1));
@@ -28,7 +47,7 @@ datasec     = str2num(fileName(under_idx(7)+1:under_idx(7)+2));
 datefile    = fileName(under_idx(2)+1:under_idx(7)+2)
 
 % addpathname = 'C:\Users\Sherman\Dropbox\MATLAB\gpstools\opensource';
-addpathname = 'C:\Users\daeda\Documents\GitHub\gps-measurement-tools\opensource';
+addpathname = 'C:\Users\yuan_\Documents\GitHub\gps-measurement-tools\opensource';
 path(path,addpathname);
 
 % addpathname = 'C:\Users\Sherman\Dropbox\MATLAB\gpstools\opensource';
@@ -67,8 +86,15 @@ eval(savestr);
 
 
 %% Plot google earth
+<<<<<<< Updated upstream
 % path(path, 'C:\Users\daeda\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
 path(path, 'C:\Users\yuan_\Documents\plot_google_map')
+=======
+path(path, 'C:\Users\yuan_\Documents\plot_google_map')
+% path(path, 'C:\Users\daeda\Documents\GitHub\gps-measurement-tools\Run Scripts\plot_google_map')
+path(path,dirName);
+
+>>>>>>> Stashed changes
 % path(path, 'C:\Users\Sherman\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
 figure(100),
 plot(gpslon, gpslat,'x')
