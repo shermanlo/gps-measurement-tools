@@ -44,6 +44,8 @@ pause
 % pvt currently only works for GPS only
 gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph)
 
+%%
+PlotSatvsTime; %(gnssRaw)
 
 %%
 pause
@@ -59,16 +61,13 @@ eval(savestr);
 
 
 %% Plot google earth
-<<<<<<< Updated upstream
-% path(path, 'C:\Users\daeda\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
-path(path, 'C:\Users\yuan_\Documents\plot_google_map')
-=======
+
 path(path, 'C:\Users\yuan_\Documents\plot_google_map')
 % path(path, 'C:\Users\daeda\Documents\GitHub\gps-measurement-tools\Run Scripts\plot_google_map')
 path(path,dirName);
 
->>>>>>> Stashed changes
 % path(path, 'C:\Users\Sherman\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
 figure(100),
 plot(gpslon, gpslat,'x')
-plot_google_map('APIKey', 'AIzaSyBHzFFKC26AGOr0L2HuKzOqkt0duzCC-kk')
+plot_google_map_with_key
+% plot_google_map('MapType', 'hybrid')
