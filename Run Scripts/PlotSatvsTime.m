@@ -40,10 +40,13 @@ for n = 1:nUniqueConstSVFreq
      const = floor( UniqueConstSVFreq(n)/constmult)
      svid = real(UniqueConstSVFreq(n))- const*constmult;
      title([ConstStr(const,:) ' PRN ' num2str(svid) ' L' num2str(imag(UniqueConstSVFreq(n)))]);
+     
+     %Set file names and save figure as both MATLAB figure and PNG in repos
      fileNameMATLAB = "Figure %d.fig";
      fileNameImage = "Figure %d.png";
      saveas(gcf,sprintf(fileNameMATLAB, n))
      saveas(gcf,sprintf(fileNameImage, n))
-     close(gcf)
-     %pause
+     
+     %close(gcf)
+     pause
 end
