@@ -2,19 +2,6 @@ clear all, close all
 
 dirName = 'C:\Users\yuan_\Documents\GNSSLogFiles'
 
-% fileName = ['gnss_log_2020_06_08_20_01_59.txt'];
-% fileName = ['gnss_log_2020_06_05_20_07_29.txt'];
-% fileName = ['gnss_log_2020_05_22_20_12_32.txt'];
-% fileName = ['gnss_log_2020_05_20_20_09_10.txt'];
-% fileName = ['gnss_log_2020_05_19_19_22_02.txt'];
-% fileName = ['gnss_log_2020_05_18_18_08_00.txt'];
-% fileName = ['gnss_log_2020_05_15_19_48_42.txt'];
-% fileName = ['gnss_log_2020_05_15_19_35_13.txt'];
-% fileName = ['gnss_log_2020_05_14_17_31_44.txt'];
-% fileName = ['gnss_log_2020_05_13_20_23_59.txt'];
-% fileName = ['gnss_log_2020_05_12_17_07_41.txt'];
-% fileName = ['gnss_log_2020_05_11_18_14_08.txt'];
-
 fileName = ['gnss_log_2020_05_30_16_08_29.txt'];
 
 under_idx   = strfind(fileName, '_');
