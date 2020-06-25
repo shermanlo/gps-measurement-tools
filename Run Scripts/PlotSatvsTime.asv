@@ -22,7 +22,7 @@ FreqNum(L5idx) = 5;
 ConstSVFreq = gnssRaw.Svid+constmult*gnssRaw.ConstellationType + i*FreqNum;
 UniqueConstSVFreq = unique(ConstSVFreq);
 nUniqueConstSVFreq = length(UniqueConstSVFreq);
- 
+
 for n = 1:nUniqueConstSVFreq
     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
     svTimeNanos = gnssRaw.TimeNanos(satsigidx);
@@ -30,7 +30,7 @@ for n = 1:nUniqueConstSVFreq
     svAgcDb = gnssRaw.AgcDb(satsigidx);
         
    figure(n),
-      yyaxis left
+     yyaxis left
      plot(svTimeNanos./1e9,svCn0Db, 'b.-')
      ylabel('Cn0 [dB-Hz]')
      yyaxis right
@@ -39,6 +39,6 @@ for n = 1:nUniqueConstSVFreq
      xlabel('time of day (sec)')
      const = floor( UniqueConstSVFreq(n)/constmult)
      svid = real(UniqueConstSVFreq(n))- const*constmult;
-     title([ConstStr(const,:) ' PRN ' num2str(svid) ' L' num2str(imag( UniqueConstSVFreq(n)))]);
+     title([ConstStr(const,:) ' PRN ' num2str(svid) ' L' num2str(imag(UniqueConstSVFreq(n)))]);
      pause
 end

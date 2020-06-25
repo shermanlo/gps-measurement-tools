@@ -14,9 +14,8 @@ dirName = 'C:\Users\yuan_\Documents\GNSSLogFiles'
 % fileName = ['gnss_log_2020_05_13_20_23_59.txt'];
 % fileName = ['gnss_log_2020_05_12_17_07_41.txt'];
 % fileName = ['gnss_log_2020_05_11_18_14_08.txt'];
-% fileName = ['gnss_log_2020_05_09_19_22_24.txt'];
 
-fileName = ['gnss_log_2020_02_20_09_40_23.txt'];
+fileName = ['gnss_log_2020_05_30_16_08_29.txt'];
 
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));
@@ -77,5 +76,9 @@ path(path,dirName);
 % path(path, 'C:\Users\Sherman\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
 figure(100),
 plot(gpslon, gpslat,'x')
-plot_google_map_with_key
+%plot_google_map_with_key
 % plot_google_map('MapType', 'hybrid')
+
+%save figure 100 in repository -M.K.Y.
+saveas(gcf,"Figure 100.fig")
+saveas(gcf,"Figure 100.png")
