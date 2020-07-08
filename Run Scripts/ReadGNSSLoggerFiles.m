@@ -12,6 +12,8 @@ datahour    = str2num(fileName(under_idx(5)+1:under_idx(6)-1));
 datamin     = str2num(fileName(under_idx(6)+1:under_idx(7)-1));
 datasec     = str2num(fileName(under_idx(7)+1:under_idx(7)+2));
 datefile    = fileName(under_idx(2)+1:under_idx(7)+2)
+datefileplot = [fileName(under_idx(2)+1:under_idx(3)-1) '/' fileName(under_idx(3)+1:under_idx(4)-1) '/' fileName(under_idx(4)+1:under_idx(5)-1) ' ' fileName(under_idx(5)+1:under_idx(6)-1) ":" fileName(under_idx(6)+1:under_idx(7)-1)];
+datestrtest = datestr([datayear datamonth dataday datahour datamin datasec], 'yyyy-mm-dd HH:MM:SS')
 
 % addpathname = 'C:\Users\Sherman\Dropbox\MATLAB\gpstools\opensource';
 addpathname = 'C:\Users\yuan_\Documents\GitHub\gps-measurement-tools\opensource';
@@ -29,6 +31,10 @@ utcTime = Gps2Utc([],fctSeconds);
 allGpsEph = GetNasaHourlyEphemeris(utcTime,dirName);
 if isempty(allGpsEph), return, end
 
+%%
+PlotSatvsTime; %(gnssRaw)
+
+pause
 %% process raw measurements, compute pseudoranges:
 [gnssMeas] = ProcessGnssMeas(gnssRaw);
 
@@ -37,9 +43,6 @@ pause
 
 % pvt currently only works for GPS only
 gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph)
-
-%%
-PlotSatvsTime; %(gnssRaw)
 
 %%
 pause
