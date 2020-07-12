@@ -69,6 +69,6 @@ plot(gpslon, gpslat,'x')
 %plot_google_map_with_key
 % plot_google_map('MapType', 'hybrid')
 
-%save figure 100 in repository -M.K.Y.
-saveas(gcf,"Figure 100.fig")
-saveas(gcf,"Figure 100.png")
+%save figure 100 in repository
+% saveas(gcf,"Figure 100.fig")
+% saveas(gcf,"Figure 100.png")

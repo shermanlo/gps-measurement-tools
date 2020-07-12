@@ -24,7 +24,7 @@ UniqueConstSVFreq = unique(ConstSVFreq);
 nUniqueConstSVFreq = length(UniqueConstSVFreq);
 
 %%
-%Plot CN0 for each svid at each freq
+% Plot CN0 for each svid at each freq
 
 % for n = 1:nUniqueConstSVFreq
 %     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
@@ -57,39 +57,73 @@ nUniqueConstSVFreq = length(UniqueConstSVFreq);
 % pause
 
 %%
-%Plot CN0 for each satellite's all frequencies on the same window
+% Plot CN0 for each satellite's all frequencies on the same window
 
-UniqueSV = unique(gnssRaw.Svid);
-nUniqueSV = length(UniqueSV);
-
-for i=1:nUniqueSV
-    svIdx = find(real(UniqueConstSVFreq)-constmult == UniqueSV(i)); %GPS ONLY
-    nCurrentFreq = length(svIdx);
-    
-    figure(i),
-        yyaxis left
-        %for j=1:nCurrentFreq
-        freqIdx = find(ConstSVFreq == UniqueConstSVFreq(svIdx(1)));
-        freqTime = gnssRaw.TimeNanos(freqIdx);
-        freqCN0 = gnssRaw.Cn0DbHz(freqIdx);
-        plot(freqTime./1e9, freqCN0, 'b.-')
-        ylabel(['L' num2str(imag(UniqueConstSVFreq(svIdx(1))))])
-        %end
-        if(nCurrentFreq > 1)
-            yyaxis right
-            freqIdx = find(ConstSVFreq == UniqueConstSVFreq(svIdx(2)));
-            freqTime = gnssRaw.TimeNanos(freqIdx);
-            freqCN0 = gnssRaw.Cn0DbHz(freqIdx);
-            plot(freqTime./1e9, freqCN0, 'r.-')
-            ylabel(['L' num2str(imag(UniqueConstSVFreq(svIdx(2))))])
-        end
-    title(['GPS PRN ' num2str(UniqueSV(i)) ' ' datestrtest]);
-    pause
-end
+% UniqueSV = unique(gnssRaw.Svid);
+% nUniqueSV = length(UniqueSV);
+% 
+% for i=1:nUniqueSV
+%     svIdx = find(real(UniqueConstSVFreq)-constmult == UniqueSV(i)); %GPS ONLY
+%     nCurrentFreq = length(svIdx);
+%     
+%     figure(i),
+%         yyaxis left
+%         %for j=1:nCurrentFreq
+%         freqIdx = find(ConstSVFreq == UniqueConstSVFreq(svIdx(1)));
+%         freqTime = gnssRaw.TimeNanos(freqIdx);
+%         freqCN0 = gnssRaw.Cn0DbHz(freqIdx);
+%         plot(freqTime./1e9, freqCN0, 'b.-')
+%         ylabel(['L' num2str(imag(UniqueConstSVFreq(svIdx(1))))])
+%         %end
+%         if(nCurrentFreq > 1)
+%             yyaxis right
+%             freqIdx = find(ConstSVFreq == UniqueConstSVFreq(svIdx(2)));
+%             freqTime = gnssRaw.TimeNanos(freqIdx);
+%             freqCN0 = gnssRaw.Cn0DbHz(freqIdx);
+%             plot(freqTime./1e9, freqCN0, 'r.-')
+%             ylabel(['L' num2str(imag(UniqueConstSVFreq(svIdx(2))))])
+%         end
+%     title(['GPS PRN ' num2str(UniqueSV(i)) ' ' datestrtest]);
+%     %pause
+% end
 
 %%
-%Plot CN0 for all satellites for each frquency on the same window
-%need to solve issue of how to plot more than 2 distinguishable graphs on a single window
+%Plot CN0 for all satellites for L1 and L5 on a respective window
+
+L1svidx = find(FreqNum == 1);
+uniqueL1svidx = unique(gnssRaw.Svid(L1svidx));
+nuniqueL1svidx = length(uniqueL1svidx);
+
+figure('Name','L1 Cn0','NumberTitle','off'),
+    for i=1:nuniqueL1svidx
+        currentsvidx = find(gnssRaw.Svid(L1svidx) == uniqueL1svidx(i));
+        currentL1svTimeNanos = gnssRaw.TimeNanos(currentsvidx);
+        currentL1svCn0DbHz = gnssRaw.Cn0DbHz(currentsvidx);
+        plot(currentL1svTimeNanos./1e9, currentL1svCn0DbHz, '.-', 'DisplayName', ['PRN ' num2str(uniqueL1svidx(i))]);
+        hold on
+        %pause
+    end
+    hold off
+    ylabel('Cn0 (dB-Hz)');
+    xlabel('Time of Day (sec)');
+    legend
+    
+L5svidx = find(FreqNum == 5);
+uniqueL5svidx = unique(gnssRaw.Svid(L5svidx));
+nuniqueL5svidx = length(uniqueL5svidx);
+
+figure('Name','L5 Cn0','NumberTitle','off'),
+    for i=1:nuniqueL5svidx
+        currentsvidx = find(gnssRaw.Svid(L5svidx) == uniqueL5svidx(i));
+        currentL5svTimeNanos = gnssRaw.TimeNanos(currentsvidx);
+        currentL5svCn0DbHz = gnssRaw.Cn0DbHz(currentsvidx);
+        plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', ['PRN ' num2str(uniqueL5svidx(i))]);
+        hold on
+    end
+    hold off
+    ylabel('Cn0 (dB-Hz)');
+    xlabel('Time of Day (sec)');
+    legend
 
 %%
 %Plot CN0 average of all frequencies for each satellite
