@@ -156,12 +156,12 @@ uniqueL5ConstSvidx = unique(ConstSvidx(L5idx));
 nuniqueL5ConstSvidx = length(uniqueL5ConstSvidx);
 
 nFiguresL5 = nuniqueL5ConstSvidx / 7;
-% nConstSvidInFigure = 7;
+nConstSvidInFigure = 7;
 
 if(nFiguresL5<1)
     nFiguresL5 = 1;
     addFigureFlag = false;
-    nConstSvidInFigure = nuniqueL5ConstSvidx;
+%     nConstSvidInFigure = nuniqueL5ConstSvidx;
 elseif(floor(nFiguresL5) == nFiguresL5)
     addFigureFlag = false;
 else
@@ -171,7 +171,7 @@ end
 
 for m = 1:nFiguresL5
     figure('Name','L5 Cn0'),
-        for j=(m -1)*7+1:min(m*7,nConstSvidInFigure)
+        for j=(m -1)*7+1:min(m*7,nuniqueL5ConstSvidx)
             currentConstSvidx = find(ConstSvidx(L5idx) == uniqueL5ConstSvidx(j));
             currentL5svTimeNanos = gnssRaw.TimeNanos(L5idx(currentConstSvidx));
             currentL5svCn0DbHz = gnssRaw.Cn0DbHz(L5idx(currentConstSvidx));
