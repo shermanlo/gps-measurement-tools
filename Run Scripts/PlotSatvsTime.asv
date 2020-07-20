@@ -125,13 +125,13 @@ for i=1:nFiguresL1
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L1 Figure ' i ' ' datestrtest]);
+        title(['L1 Figure ' num2str(i) ' ' datestrtest]);
         fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).png";
         saveas(gcf, sprintf(fileName, i, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
 
 if addFigureFlag
-    figure('Name','L1 Cn0','NumberTitle','off'),
+    figure('Name','L1 Cn0'),
         for k=j+1:nuniqueL1ConstSvidx
             currentConstSvidx = find(ConstSvidx(L1idx) == uniqueL1ConstSvidx(k));
             currentL1svTimeNanos = gnssRaw.TimeNanos(L1idx(currentConstSvidx));
@@ -144,7 +144,7 @@ if addFigureFlag
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L1 Figure ' i+1 ' ' datestrtest]);
+        title(['L1 Figure ' num2str(i+1) ' ' datestrtest]);
         fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).png";
         saveas(gcf, sprintf(fileName, i+1, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
@@ -170,37 +170,37 @@ else
 end
 
 for i = 1:nFiguresL5
-    figure('Name','L5 Cn0','NumberTitle','off'),
-        for j=(i-1)*7+1:nConstSvidInFigure
+    figure('Name','L5 Cn0'),
+        for j=(i-1)*7+1:min((i)*7+nConstSvidInFigure
             currentConstSvidx = find(ConstSvidx(L5idx) == uniqueL5ConstSvidx(j));
             currentL5svTimeNanos = gnssRaw.TimeNanos(L5idx(currentConstSvidx));
             currentL5svCn0DbHz = gnssRaw.Cn0DbHz(L5idx(currentConstSvidx));
-            plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL5ConstSvidx(j)),:) 'PRN ' num2str(imag(uniqueL5ConstSvidx(j)))]);
+            plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL5ConstSvidx(j)),:) ' PRN ' num2str(imag(uniqueL5ConstSvidx(j)))]);
             hold on
         end
         hold off
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L5 Figure ' i ' ' datestrtest]);
+        title(['L5 Figure ' num2str(i) ' ' datestrtest]);
         fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).png";
         saveas(gcf, sprintf(fileName, i, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
 
 if addFigureFlag
-    figure('Name','L5 Cn0','NumberTitle','off'),
+    figure('Name','L5 Cn0'),
         for k=j+1:nuniqueL5ConstSvidx
             currentConstSvidx = find(ConstSvidx(L5idx) == uniqueL5ConstSvidx(k));
             currentL5svTimeNanos = gnssRaw.TimeNanos(L5idx(currentConstSvidx));
             currentL5svCn0DbHz = gnssRaw.Cn0DbHz(L5idx(currentConstSvidx));
-            plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL5ConstSvidx(k)),:) 'PRN ' num2str(imag(uniqueL5ConstSvidx(k)))]);
+            plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL5ConstSvidx(k)),:) ' PRN ' num2str(imag(uniqueL5ConstSvidx(k)))]);
             hold on
         end
         hold off
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L5 Cn0' datestrtest]);
+        title(['L5 Figure ' num2str(i+1) ' ' datestrtest]);
         fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).png";
         saveas(gcf, sprintf(fileName, i+1, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
