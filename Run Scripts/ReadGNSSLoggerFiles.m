@@ -2,7 +2,7 @@ clear all, close all
 
 dirName = 'C:\Users\yuan_\Documents\GNSSLogFiles'
 
-fileName = ['gnss_log_2020_05_30_16_08_29.txt'];
+fileName = ['gnss_log_2020_05_10_16_38_56.txt'];
 
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));
@@ -39,36 +39,36 @@ pause
 [gnssMeas] = ProcessGnssMeas(gnssRaw);
 
 
-pause
+% pause
 
 % pvt currently only works for GPS only
-gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph)
-
-%%
-pause
-datedash = strfind(datefile,'_')
-
-gpslat = gpsPvt.allLlaDegDegM(:,1);
-gpslon = gpsPvt.allLlaDegDegM(:,2);
-gpsht  = gpsPvt.allLlaDegDegM(:,3);
-gpstime = gpsPvt.FctSeconds;
-
-savestr = ['save gpsproc' datefile ' gpslat gpslon gpsht gpstime'];
-eval(savestr);
-
-
-%% Plot google earth
-
-path(path, 'C:\Users\yuan_\Documents\plot_google_map')
-% path(path, 'C:\Users\daeda\Documents\GitHub\gps-measurement-tools\Run Scripts\plot_google_map')
-path(path,dirName);
-
-% path(path, 'C:\Users\Sherman\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
-figure(100),
-plot(gpslon, gpslat,'x')
-%plot_google_map_with_key
-% plot_google_map('MapType', 'hybrid')
-
-%save figure 100 in repository
-% saveas(gcf,"Figure 100.fig")
-% saveas(gcf,"Figure 100.png")
+% gpsPvt = GpsWlsPvt(gnssMeas,allGpsEph)
+% 
+% %%
+% pause
+% datedash = strfind(datefile,'_')
+% 
+% gpslat = gpsPvt.allLlaDegDegM(:,1);
+% gpslon = gpsPvt.allLlaDegDegM(:,2);
+% gpsht  = gpsPvt.allLlaDegDegM(:,3);
+% gpstime = gpsPvt.FctSeconds;
+% 
+% savestr = ['save gpsproc' datefile ' gpslat gpslon gpsht gpstime'];
+% eval(savestr);
+% 
+% 
+% %% Plot google earth
+% 
+% path(path, 'C:\Users\yuan_\Documents\plot_google_map')
+% % path(path, 'C:\Users\daeda\Documents\GitHub\gps-measurement-tools\Run Scripts\plot_google_map')
+% path(path,dirName);
+% 
+% % path(path, 'C:\Users\Sherman\Dropbox\MATLAB\SharkTag\CoarseTimePosition\utilities\plot_google_map')
+% figure(100),
+% plot(gpslon, gpslat,'x')
+% %plot_google_map_with_key
+% % plot_google_map('MapType', 'hybrid')
+% 
+% %save figure 100 in repository
+% % saveas(gcf,"Figure 100.fig")
+% % saveas(gcf,"Figure 100.png")
