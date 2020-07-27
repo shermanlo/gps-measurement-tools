@@ -1,8 +1,8 @@
 clear all, close all
 
-dirName = 'C:\Users\yuan_\Documents\GNSSLogFiles'
+dirName = 'C:\Users\yuan_\Desktop\7.22'
 
-fileName = ['gnss_log_2020_05_10_16_38_56.txt'];
+fileName = ['(1cm) gnss_log_2020_07_22_18_00_29.txt'];
 
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));

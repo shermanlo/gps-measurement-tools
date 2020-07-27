@@ -26,35 +26,35 @@ nUniqueConstSVFreq = length(UniqueConstSVFreq);
 %%
 % Plot Cn0 of each unique constellation svid frequency combination
 
-% for n = 1:nUniqueConstSVFreq
-%     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
-%     svTimeNanos = gnssRaw.TimeNanos(satsigidx);
-%     svCn0Db = gnssRaw.Cn0DbHz(satsigidx);
-%     svAgcDb = gnssRaw.AgcDb(satsigidx);
-%         
-%    figure(n),
-%      yyaxis left
-%      plot(svTimeNanos./1e9,svCn0Db, 'b.-')
-%      ylabel('Cn0 [dB-Hz]')
-%      yyaxis right
-%      plot(svTimeNanos./1e9,svAgcDb, 'ro')     
-%      ylabel('AGC [dB]')
-%      xlabel('time of day (sec)')
-%      const = floor( UniqueConstSVFreq(n)/constmult)
-%      svid = real(UniqueConstSVFreq(n))- const*constmult;
-% 
-%      title([ConstStr(const,:) ' PRN ' num2str(svid) ' L' num2str(imag(UniqueConstSVFreq(n))) ' ' datestrtest]);
-%      
-%      %Set file names and save figure as both MATLAB figure and PNG in repos
-%      fileNameMATLAB = "Figure %d CN0 %s PRN%d L%d %d-%d-%d (%d-%d-%d).fig";
-%      fileNameImage = "Figure %d CN0 %s PRN%d L%d %d-%d-%d (%d-%d-%d).png";
-%      saveas(gcf,sprintf(fileNameMATLAB, n, ConstStr(const,:), svid, imag(UniqueConstSVFreq(n)), datayear, datamonth, dataday, datahour, datamin, datasec))
-%      saveas(gcf,sprintf(fileNameImage, n, ConstStr(const,:), svid, imag(UniqueConstSVFreq(n)), datayear, datamonth, dataday, datahour, datamin, datasec))
-%      
-%      close(gcf)
-%      %pause
-% end
-% pause
+for n = 1:nUniqueConstSVFreq
+    satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
+    svTimeNanos = gnssRaw.TimeNanos(satsigidx);
+    svCn0Db = gnssRaw.Cn0DbHz(satsigidx);
+    svAgcDb = gnssRaw.AgcDb(satsigidx);
+        
+   figure(n),
+     yyaxis left
+     plot(svTimeNanos./1e9,svCn0Db, 'b.-')
+     ylabel('Cn0 [dB-Hz]')
+     yyaxis right
+     plot(svTimeNanos./1e9,svAgcDb, 'ro')     
+     ylabel('AGC [dB]')
+     xlabel('time of day (sec)')
+     const = floor( UniqueConstSVFreq(n)/constmult)
+     svid = real(UniqueConstSVFreq(n))- const*constmult;
+
+     title([ConstStr(const,:) ' PRN ' num2str(svid) ' L' num2str(imag(UniqueConstSVFreq(n))) ' ' datestrtest]);
+     
+     %Set file names and save figure as both MATLAB figure and PNG in repos
+     fileNameMATLAB = "Figure %d CN0 %s PRN%d L%d %d-%d-%d (%d-%d-%d).fig";
+     fileNameImage = "Figure %d CN0 %s PRN%d L%d %d-%d-%d (%d-%d-%d).png";
+     saveas(gcf,sprintf(fileNameMATLAB, n, ConstStr(const,:), svid, imag(UniqueConstSVFreq(n)), datayear, datamonth, dataday, datahour, datamin, datasec))
+     saveas(gcf,sprintf(fileNameImage, n, ConstStr(const,:), svid, imag(UniqueConstSVFreq(n)), datayear, datamonth, dataday, datahour, datamin, datasec))
+     
+     close(gcf)
+     %pause
+end
+%pause
 
 %%
 % Plot CN0 for each satellite's all frequencies on the same window
@@ -88,7 +88,7 @@ nUniqueConstSVFreq = length(UniqueConstSVFreq);
 % end
 
 %%
-%Plot CN0 for all svids of all consts for L1 and L5 on 2 windows (running this removes pvt functionality)
+%Plot CN0 for all unique ConstSvidx on L1 and L5 on 2 sets of windows (disables pvt functionality)
 
 ConstSvidx = gnssRaw.ConstellationType + i*gnssRaw.Svid;
 % uniqueConstSvidx = unique(ConstSvid);
@@ -98,22 +98,22 @@ uniqueL1ConstSvidx = unique(ConstSvidx(L1idx));
 nuniqueL1ConstSvidx = length(uniqueL1ConstSvidx);
 
 nFiguresL1 = nuniqueL1ConstSvidx / 7;
-nConstSvidInFigure = 7;
+% nConstSvidInFigure = 7;
 
 if(nFiguresL1<1)
     nFiguresL1 = 1;
-    addFigureFlag = false;
-    nConstSvidInFigure = nuniqueL1ConstSvidx;
+%     addFigureFlag = false;
+%     nConstSvidInFigure = nuniqueL1ConstSvidx;
 elseif(floor(nFiguresL1) == nFiguresL1)
-    addFigureFlag = false;
+%     addFigureFlag = false;
 else
-    addFigureFlag = true;
-    nFiguresL1 = floor(nFiguresL1);
+%     addFigureFlag = true;
+    nFiguresL1 = floor(nFiguresL1) + 1;
 end
 
-for i=1:nFiguresL1
+for m=1:nFiguresL1
     figure('Name','L1 Cn0'),
-        for j=(i-1)*7+1:i*nConstSvidInFigure
+        for j=(m-1)*7+1:min(m*7, nuniqueL1ConstSvidx)
             currentConstSvidx = find(ConstSvidx(L1idx) == uniqueL1ConstSvidx(j));
             currentL1svTimeNanos = gnssRaw.TimeNanos(L1idx(currentConstSvidx));
             currentL1svCn0DbHz = gnssRaw.Cn0DbHz(L1idx(currentConstSvidx));
@@ -125,28 +125,11 @@ for i=1:nFiguresL1
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L1 Figure ' num2str(i) ' ' datestrtest]);
+        title(['L1 Figure ' num2str(m) ' ' datestrtest]);
         fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).png";
-        saveas(gcf, sprintf(fileName, i, datayear, datamonth, dataday, datahour, datamin, datasec));
-end
-
-if addFigureFlag
-    figure('Name','L1 Cn0'),
-        for k=j+1:nuniqueL1ConstSvidx
-            currentConstSvidx = find(ConstSvidx(L1idx) == uniqueL1ConstSvidx(k));
-            currentL1svTimeNanos = gnssRaw.TimeNanos(L1idx(currentConstSvidx));
-            currentL1svCn0DbHz = gnssRaw.Cn0DbHz(L1idx(currentConstSvidx));
-            plot(currentL1svTimeNanos./1e9, currentL1svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL1ConstSvidx(k)),:) ' PRN ' num2str(imag(uniqueL1ConstSvidx(k)))]);
-            hold on
-            %pause
-        end
-        hold off
-        ylabel('Cn0 (dB-Hz)');
-        xlabel('Time of Day (sec)');
-        legend
-        title(['L1 Figure ' num2str(i+1) ' ' datestrtest]);
-        fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).png";
-        saveas(gcf, sprintf(fileName, i+1, datayear, datamonth, dataday, datahour, datamin, datasec));
+        saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
+        fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).fig";
+        saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
 
 pause
@@ -156,22 +139,22 @@ uniqueL5ConstSvidx = unique(ConstSvidx(L5idx));
 nuniqueL5ConstSvidx = length(uniqueL5ConstSvidx);
 
 nFiguresL5 = nuniqueL5ConstSvidx / 7;
-nConstSvidInFigure = 7;
+% nConstSvidInFigure = 7;
 
 if(nFiguresL5<1)
     nFiguresL5 = 1;
-    addFigureFlag = false;
+%     addFigureFlag = false;
 %     nConstSvidInFigure = nuniqueL5ConstSvidx;
 elseif(floor(nFiguresL5) == nFiguresL5)
-    addFigureFlag = false;
+%     addFigureFlag = false;
 else
-    addFigureFlag = true;
-    nFiguresL5 = floor(nFiguresL5);
+%     addFigureFlag = true;
+    nFiguresL5 = floor(nFiguresL5) + 1;
 end
 
 for m = 1:nFiguresL5
     figure('Name','L5 Cn0'),
-        for j=(m -1)*7+1:min(m*7,nuniqueL5ConstSvidx)
+        for j=(m-1)*7+1:min(m*7, nuniqueL5ConstSvidx)
             currentConstSvidx = find(ConstSvidx(L5idx) == uniqueL5ConstSvidx(j));
             currentL5svTimeNanos = gnssRaw.TimeNanos(L5idx(currentConstSvidx));
             currentL5svCn0DbHz = gnssRaw.Cn0DbHz(L5idx(currentConstSvidx));
@@ -182,27 +165,11 @@ for m = 1:nFiguresL5
         ylabel('Cn0 (dB-Hz)');
         xlabel('Time of Day (sec)');
         legend
-        title(['L5 Figure ' num2str(i) ' ' datestrtest]);
+        title(['L5 Figure ' num2str(m) ' ' datestrtest]);
         fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).png";
-        saveas(gcf, sprintf(fileName, i, datayear, datamonth, dataday, datahour, datamin, datasec));
-end
-
-if addFigureFlag
-    figure('Name','L5 Cn0'),
-        for k=j+1:nuniqueL5ConstSvidx
-            currentConstSvidx = find(ConstSvidx(L5idx) == uniqueL5ConstSvidx(k));
-            currentL5svTimeNanos = gnssRaw.TimeNanos(L5idx(currentConstSvidx));
-            currentL5svCn0DbHz = gnssRaw.Cn0DbHz(L5idx(currentConstSvidx));
-            plot(currentL5svTimeNanos./1e9, currentL5svCn0DbHz, '.-', 'DisplayName', [ConstStr(real(uniqueL5ConstSvidx(k)),:) ' PRN ' num2str(imag(uniqueL5ConstSvidx(k)))]);
-            hold on
-        end
-        hold off
-        ylabel('Cn0 (dB-Hz)');
-        xlabel('Time of Day (sec)');
-        legend
-        title(['L5 Figure ' num2str(i+1) ' ' datestrtest]);
-        fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).png";
-        saveas(gcf, sprintf(fileName, i+1, datayear, datamonth, dataday, datahour, datamin, datasec));
+        saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
+        fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).fig";
+        saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
 end
 
 %%
