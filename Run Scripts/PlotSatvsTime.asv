@@ -131,10 +131,16 @@ uniqueL1ConstSvidx = unique(ConstSvidx(L1idx));
 nuniqueL1ConstSvidx = length(uniqueL1ConstSvidx);
 
 nFiguresL1 = nuniqueL1ConstSvidx / 7;
+% nConstSvidInFigure = 7;
 
 if(nFiguresL1<1)
     nFiguresL1 = 1;
-elseif(floor(nFiguresL1) ~= nFiguresL1)
+%     addFigureFlag = false;
+%     nConstSvidInFigure = nuniqueL1ConstSvidx;
+elseif(floor(nFiguresL1) == nFiguresL1)
+%     addFigureFlag = false;
+else
+%     addFigureFlag = true;
     nFiguresL1 = floor(nFiguresL1) + 1;
 end
 
@@ -167,10 +173,16 @@ uniqueL5ConstSvidx = unique(ConstSvidx(L5idx));
 nuniqueL5ConstSvidx = length(uniqueL5ConstSvidx);
 
 nFiguresL5 = nuniqueL5ConstSvidx / 7;
+% nConstSvidInFigure = 7;
 
 if(nFiguresL5<1)
     nFiguresL5 = 1;
-elseif(floor(nFiguresL5) ~= nFiguresL5)
+%     addFigureFlag = false;
+%     nConstSvidInFigure = nuniqueL5ConstSvidx;
+elseif(floor(nFiguresL5) == nFiguresL5)
+%     addFigureFlag = false;
+else
+%     addFigureFlag = true;
     nFiguresL5 = floor(nFiguresL5) + 1;
 end
 
