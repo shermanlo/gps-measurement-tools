@@ -157,9 +157,10 @@ for m=1:nFiguresL1
         saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
         fileName = "L1 Figure %d %d-%d-%d (%d-%d-%d).fig";
         saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
+        close(gcf)
 end
 
-pause
+% pause
 %HERE BEGINS L5 SET PLOTS
 
 L5idx = find(FreqNum == 5);
@@ -192,6 +193,7 @@ for m = 1:nFiguresL5
         saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
         fileName = "L5 Figure %d %d-%d-%d (%d-%d-%d).fig";
         saveas(gcf, sprintf(fileName, m, datayear, datamonth, dataday, datahour, datamin, datasec));
+        close(gcf)
 end
 
 

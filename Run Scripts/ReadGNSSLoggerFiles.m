@@ -1,8 +1,8 @@
 clear all, close all
 
-dirName = 'C:\Users\yuan_\Desktop\8.6 (Distilled Water)'
+dirName = 'C:\Users\yuan_\Desktop\gnssUnderwaterLog2020\8.8 Bay Water'
 
-fileName = ['(1cm Face Up) gnss_log_2020_08_06_19_12_09.txt'];
+fileName = ['(dry no bag down) gnss_log_2020_08_08_20_42_01.txt'];
 
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));
