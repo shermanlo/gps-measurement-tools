@@ -69,6 +69,15 @@ minTimeNanos = min(gnssRaw.TimeNanos);
 maxTimeNanos = max(gnssRaw.TimeNanos);
 maxLength = double((maxTimeNanos./1e9 - minTimeNanos./1e9) + 1);
 
+nsats = length(UniqueConstSVFreq);
+svids = zeros(1,nsats);
+consts = zeros(1,nsats);
+freqs = zeros(1,nsats);
+mins = zeros(1,nsats);
+maxs = zeros(1,nsats);
+means = zeros(1,nsats);
+nanRatios = zeros(1,nsats);
+
 for n = 1:nUniqueConstSVFreq
     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
     uwsatsigidx = find(gnssRaw.TimeNanos(satsigidx) > minTimeNanos+(10*1e9));
@@ -79,7 +88,26 @@ for n = 1:nUniqueConstSVFreq
     nanRatio = 1- double(length(satsigidx)/maxLength);
     
     fprintf(fileID, '%d,%d,%d,%f,%f,%f,%f\n', svid, const, freq, min(svCn0Db,[],'omitnan'), max(svCn0Db,[],'omitnan'), mean(svCn0Db,'omitnan'), nanRatio);
+    
+    svids(n) = svid;
+    consts(n) = const;
+    freqs(n) = freq;
+    if(~isnan(min(svCn0Db,[],'omitnan')))
+        mins(n) = min(svCn0Db,[],'omitnan');
+    end
+    if(~isnan(max(svCn0Db,[],'omitnan')))
+        maxs(n) = max(svCn0Db,[],'omitnan');
+    end
+    if(~isnan(mean(svCn0Db,'omitnan')))
+        means(n) = mean(svCn0Db,'omitnan');
+    end    
+    nanRatios(n) = nanRatio;
 end
+
+fprintf(fileID, '\n');
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average All", nsats, mean(mins,'omitnan'),mean(maxs,'omitnan'),mean(means,'omitnan'),mean(nanRatios,'omitnan'));
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average L1", length(find(freqs==1)), mean(mins(freqs==1),'omitnan'),mean(maxs(freqs==1),'omitnan'),mean(means(freqs==1),'omitnan'),mean(nanRatios(freqs==1),'omitnan'));
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average L5", length(find(freqs==5)), mean(mins(freqs==5),'omitnan'),mean(maxs(freqs==5),'omitnan'),mean(means(freqs==5),'omitnan'),mean(nanRatios(freqs==5),'omitnan'));
 
 fclose(fileID);
 
