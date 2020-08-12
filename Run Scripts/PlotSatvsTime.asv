@@ -72,7 +72,7 @@ maxLength = double((maxTimeNanos./1e9 - minTimeNanos./1e9) + 1);
 for n = 1:nUniqueConstSVFreq
     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
     uwsatsigidx = find(gnssRaw.TimeNanos(satsigidx) > minTimeNanos+(10*1e9));
-    svCn0Db = gnssRaw.Cn0DbHz(satsigidx(uwsatsigidx));
+    svCn0Db = gnssRaw.Cn0DbHz(satsigidx);
     const = floor(UniqueConstSVFreq(n)/constmult);
     svid = real(UniqueConstSVFreq(n))- const*constmult;
     freq = imag(UniqueConstSVFreq(n));
