@@ -1,8 +1,7 @@
 clear all, close all
 
-dirName = 'C:\Users\yuan_\Desktop\gnssUnderwaterLog2020\8.9 Distilled Water (No Phone Case)\1cm Screen Up'
-
-fileName = ['(1cm Screen Up) gnss_log_2020_08_09_17_58_49.txt'];
+dirName = 'C:\Users\yuan_\Desktop\gnssUnderwaterLog2020\8.15 Bay Water\Raw Files';
+fileName = ['(10cm Down) gnss_log_2020_08_15_20_00_38.txt'];
 
 under_idx   = strfind(fileName, '_');
 datayear    = str2num(fileName(under_idx(2)+1:under_idx(3)-1));
@@ -34,7 +33,7 @@ if isempty(allGpsEph), return, end
 %%
 PlotSatvsTime; %(gnssRaw)
 
-pause
+% pause
 %% process raw measurements, compute pseudoranges:
 [gnssMeas] = ProcessGnssMeas(gnssRaw);
 

@@ -63,51 +63,53 @@ nUniqueConstSVFreq = length(UniqueConstSVFreq);
 
 csvFileName = [num2str(datayear) '-' num2str(datamonth) '-' num2str(dataday) ' ' num2str(datahour) '-' num2str(datamin) '-' num2str(datasec) '.csv'];
 fileID = fopen(csvFileName, 'w');
-fprintf(fileID, '%s,%s,%s,%s,%s,%s,%s\n', 'SVID', 'Constellation', 'Frequency', 'Min C/No', 'Max C/No', 'Ave C/No', 'NaN');
+fprintf(fileID, '%s,%s,%s,%s,%s,%s,%s,%s\n', 'SVID', 'Constellation', 'Frequency', 'Min C/No', 'Max C/No', 'Ave C/No', 'NaN', '# Good Values');
 
 minTimeNanos = min(gnssRaw.TimeNanos);
 maxTimeNanos = max(gnssRaw.TimeNanos);
 maxLength = double((maxTimeNanos./1e9 - minTimeNanos./1e9) + 1);
 
 nsats = length(UniqueConstSVFreq);
-svids = zeros(1,nsats);
-consts = zeros(1,nsats);
-freqs = zeros(1,nsats);
-mins = zeros(1,nsats);
-maxs = zeros(1,nsats);
-means = zeros(1,nsats);
-nanRatios = zeros(1,nsats);
+svids = NaN * zeros(1,nsats);
+consts = NaN * zeros(1,nsats);
+freqs = NaN * zeros(1,nsats);
+mins = NaN * zeros(1,nsats);
+maxs = NaN * zeros(1,nsats);
+means = NaN * zeros(1,nsats);
+nanRatios = NaN * zeros(1,nsats);
+nGoodValues = NaN * zeros(1,nsats);
 
 for n = 1:nUniqueConstSVFreq
     satsigidx = find(ConstSVFreq == UniqueConstSVFreq(n));
-    uwsatsigidx = find(gnssRaw.TimeNanos(satsigidx) > minTimeNanos+(10*1e9));
-    svCn0Db = gnssRaw.Cn0DbHz(satsigidx(uwsatsigidx));
+    uwsatsigidxMin = find(gnssRaw.TimeNanos(satsigidx) > minTimeNanos+( 30 *1e9));
+    uwsatsigidxMax = find(gnssRaw.TimeNanos(satsigidx(uwsatsigidxMin)) < maxTimeNanos-( 30 *1e9));
+    svCn0Db = gnssRaw.Cn0DbHz(satsigidx(uwsatsigidxMin(uwsatsigidxMax)));
+    goodValues = find(~isnan(svCn0Db));
+    if(isempty(goodValues))
+       continue 
+    end
     const = floor(UniqueConstSVFreq(n)/constmult);
     svid = real(UniqueConstSVFreq(n))- const*constmult;
     freq = imag(UniqueConstSVFreq(n));
-    nanRatio = 1- double(length(satsigidx)/maxLength);
+    nanRatio = 1- double(length(goodValues)/maxLength);
     
-    fprintf(fileID, '%d,%d,%d,%f,%f,%f,%f\n', svid, const, freq, min(svCn0Db,[],'omitnan'), max(svCn0Db,[],'omitnan'), mean(svCn0Db,'omitnan'), nanRatio);
+    fprintf(fileID, '%d,%d,%d,%f,%f,%f,%f,%d\n', svid, const, freq, min(svCn0Db,[],'omitnan'), max(svCn0Db,[],'omitnan'), mean(svCn0Db,'omitnan'), nanRatio, length(goodValues));
     
     svids(n) = svid;
     consts(n) = const;
     freqs(n) = freq;
-    if(~isnan(min(svCn0Db,[],'omitnan')))
-        mins(n) = min(svCn0Db,[],'omitnan');
-    end
-    if(~isnan(max(svCn0Db,[],'omitnan')))
-        maxs(n) = max(svCn0Db,[],'omitnan');
-    end
-    if(~isnan(mean(svCn0Db,'omitnan')))
-        means(n) = mean(svCn0Db,'omitnan');
-    end    
+    mins(n) = min(svCn0Db,[],'omitnan');
+    maxs(n) = max(svCn0Db,[],'omitnan');
+    means(n) = mean(svCn0Db,'omitnan');
     nanRatios(n) = nanRatio;
+    nGoodValues(n) = length(goodValues);
+    
 end
 
 fprintf(fileID, '\n');
-fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average All", nsats, mean(mins,'omitnan'),mean(maxs,'omitnan'),mean(means,'omitnan'),mean(nanRatios,'omitnan'));
-fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average L1", length(find(freqs==1)), mean(mins(freqs==1),'omitnan'),mean(maxs(freqs==1),'omitnan'),mean(means(freqs==1),'omitnan'),mean(nanRatios(freqs==1),'omitnan'));
-fprintf(fileID, '%s,,%d,%f,%f,%f,%f\n', "Average L5", length(find(freqs==5)), mean(mins(freqs==5),'omitnan'),mean(maxs(freqs==5),'omitnan'),mean(means(freqs==5),'omitnan'),mean(nanRatios(freqs==5),'omitnan'));
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f,%f\n', "Average All", nsats, mean(mins,'omitnan'),mean(maxs,'omitnan'),mean(means,'omitnan'),mean(nanRatios,'omitnan'),mean(nGoodValues,'omitnan'));
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f,%f\n', "Average L1", length(find(freqs==1)), mean(mins(freqs==1),'omitnan'),mean(maxs(freqs==1),'omitnan'),mean(means(freqs==1),'omitnan'),mean(nanRatios(freqs==1),'omitnan'),mean(nGoodValues(freqs==1),'omitnan'));
+fprintf(fileID, '%s,,%d,%f,%f,%f,%f,%f\n', "Average L5", length(find(freqs==5)), mean(mins(freqs==5),'omitnan'),mean(maxs(freqs==5),'omitnan'),mean(means(freqs==5),'omitnan'),mean(nanRatios(freqs==5),'omitnan'),mean(nGoodValues(freqs==5),'omitnan'));
 
 fclose(fileID);
 
